@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 
 import Join from '../modules/join'
 
@@ -13,7 +13,9 @@ const JoinPage = () => {
         alignItems: 'center',
       }}
     >
-      <Join />
+      <Box sx={{ flex: '0 0 40%' }}>
+        <Join />
+      </Box>
     </Container>
   )
 }
