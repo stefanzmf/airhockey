@@ -1,22 +1,33 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { User } from 'apps/server/src/users/types';
+import {randomUUID} from 'crypto'
+
+import { User, UserReqBody } from './types';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(private usersService: UsersService) {
+  }
+
   @Get()
-  findAll() {
-    return 'all users'
+  getAll() {
+    return this.usersService.getAll()
   }
 
   @Get('/:email')
-  findById(@Param('email') email: string) {
-    console.log(email)
-    return 'user'
+  findByEmail(@Param('email') email: string) {
+    return this.usersService.findByEmail(email);
   }
 
   @Post('/create')
-  create(@Body() user: Pick<User, 'email' | 'username'>) {
-    console.log(user)
-    return 'user created'
+  create(@Body() user: UserReqBody) {
+    const id = randomUUID();
+    const createdAt = new Date()
+
+    this.usersService.create({
+      id,
+      createdAt,
+      ...user,
+    })
   }
 }

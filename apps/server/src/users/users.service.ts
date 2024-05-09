@@ -6,14 +6,24 @@ import {User} from './types'
 export class UsersService {
   private readonly users: User[] = [];
 
-  findAll() {
+  getAll() {
+    return this.users;
   }
 
   findByEmail(email: string) {
-    this.users.find((user) => user.email === email)
+    const user = this.users.find((user) => user.email === email)
+
+    if (!user) return false;
+
+    return user;
   }
 
   create(user: User) {
-    console.log(`User created`, JSON.stringify(user))
+    if (this.findByEmail(user.email)) {
+      return false;
+    }
+
+    this.users.push(user);
+    return true;
   }
 }

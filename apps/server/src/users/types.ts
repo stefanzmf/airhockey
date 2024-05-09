@@ -4,3 +4,5 @@ export type User = {
   email: string;
   createdAt: Date;
 }
+
+export type UserReqBody = Pick<User, 'username' | 'email'>
