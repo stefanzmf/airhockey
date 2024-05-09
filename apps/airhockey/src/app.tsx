@@ -1,8 +1,13 @@
 import Router from './Router';
+import { CssBaseline } from '@mui/material';
+
 
 export function App() {
   return (
-    <Router />
+    <>
+      <CssBaseline />
+      <Router />
+    </>
   );
 }
 
