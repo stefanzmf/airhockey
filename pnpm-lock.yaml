@@ -26,6 +26,9 @@ dependencies:
   '@nestjs/platform-express':
     specifier: ^10.0.2
     version: 10.3.8(@nestjs/common@10.3.8)(@nestjs/core@10.3.8)
+  '@tanstack/react-query':
+    specifier: ^5.35.5
+    version: 5.35.5(react@18.2.0)
   axios:
     specifier: ^1.6.0
     version: 1.6.8
@@ -3879,6 +3882,19 @@ packages:
     dependencies:
       defer-to-connect: 2.0.1
     dev: true
+
+  /@tanstack/query-core@5.35.5:
+    resolution: {integrity: sha512-OMWvlEqG01RfGj+XZb/piDzPp0eZkkHWSDHt2LvE/fd1zWburP/xwm0ghk6Iv8cuPlP+ACFkZviKXK0OVt6lhg==}
+    dev: false
+
+  /@tanstack/react-query@5.35.5(react@18.2.0):
+    resolution: {integrity: sha512-sppX7L+PVn5GBV3In6zzj0zcKfnZRKhXbX1MfIfKo1OjIq2GMaopvAFOP0x1bRYTUk2ikrdYcQYOozX7PWkb8A==}
+    peerDependencies:
+      react: ^18.0.0
+    dependencies:
+      '@tanstack/query-core': 5.35.5
+      react: 18.2.0
+    dev: false
 
   /@testing-library/dom@9.3.4:
     resolution: {integrity: sha512-FlS4ZWlp97iiNWig0Muq8p+3rVDjRiYE+YKGbAqXOu9nwJFFOdL00kFpz42M+4huzYi86vAK1sOOfyOG45muIQ==}
