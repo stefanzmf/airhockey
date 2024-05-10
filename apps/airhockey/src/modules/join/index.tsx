@@ -47,11 +47,14 @@ const Join = () => {
     }))
   }, [])
 
+  const hasErrors = Object.values(fieldsErrors).filter((err) => err).length !== 0
+
   return (
     <form name="join">
       <Stack spacing={3}>
         <TextField
           required
+          autoFocus
           error={!!fieldsErrors[FieldsName.USERNAME]}
           helperText={fieldsErrors[FieldsName.USERNAME]}
           onChange={handleOnFieldChange}
@@ -76,7 +79,10 @@ const Join = () => {
           name={FieldsName.EMAIL}
         />
 
-        <Button variant="contained">Join</Button>
+        <Button
+          variant="contained"
+          disabled={hasErrors}
+        >Join</Button>
       </Stack>
     </form>
   )
