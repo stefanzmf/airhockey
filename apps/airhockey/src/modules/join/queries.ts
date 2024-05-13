@@ -4,6 +4,7 @@ import {api} from '../../queryClient'
 
 export const usersKeys = {
   users: ['users'] as const,
+  usersCount: ['usersCount'] as const,
 }
 
 export const useUserMutation = () => {
@@ -19,6 +20,17 @@ export const useUsersQuery = () => {
     queryKey: usersKeys.users,
     queryFn: async () => {
       const response = await api.get('/users');
+
+      return response.data
+    }
+  })
+}
+
+export const useUsersCountQuery = () => {
+  return useQuery({
+    queryKey: usersKeys.usersCount,
+    queryFn: async () => {
+      const response = await api.get('/users/count');
 
       return response.data
     }
