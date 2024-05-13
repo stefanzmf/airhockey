@@ -1,24 +1,28 @@
 import React, { useCallback, useState } from 'react';
-import { Stack, TextField, Button } from '@mui/material';
+import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 
-import {FieldsName} from './utils'
-import {useFormValidation, messages} from './useFieldValidation'
+import { FieldsName } from './utils'
+import { messages, useFormValidation } from './useFieldValidation'
+import { useUserMutation, useUsersCountQuery } from './queries';
 
 const Join = () => {
+  const userMutation = useUserMutation()
+  const { data: usersCountData, isLoading: isLoadingUsersCount } = useUsersCountQuery();
+
   const [formValues, setFormValues] = useState<{
     [FieldsName.USERNAME]: string,
     [FieldsName.EMAIL]: string,
   }>({
-    username: '',
-    email: '',
+    [FieldsName.USERNAME]: '',
+    [FieldsName.EMAIL]: '',
   });
 
   const [fieldsErrors, setFieldsErrors] = useState<{
     [FieldsName.USERNAME]: undefined | string,
     [FieldsName.EMAIL]: undefined | string,
   }>({
-    username: undefined,
-    email: undefined
+    [FieldsName.USERNAME]: undefined,
+    [FieldsName.EMAIL]: undefined
   });
 
   const [validateField] = useFormValidation()
@@ -47,10 +51,21 @@ const Join = () => {
     }))
   }, [])
 
+  const handleFormSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    userMutation.mutate({
+      username: formValues[FieldsName.USERNAME],
+      email: formValues[FieldsName.EMAIL],
+    })
+  }, [formValues[FieldsName.USERNAME], formValues[FieldsName.EMAIL]])
+
   const hasErrors = Object.values(fieldsErrors).filter((err) => err).length !== 0
 
+  if (isLoadingUsersCount) return null;
+
   return (
-    <form name="join">
+    <form name="join" onSubmit={handleFormSubmit}>
       <Stack spacing={3}>
         <TextField
           required
@@ -80,10 +95,22 @@ const Join = () => {
         />
 
         <Button
+          type="submit"
           variant="contained"
-          disabled={hasErrors}
-        >Join</Button>
+          disabled={hasErrors || userMutation.isPending}
+        >
+          Join
+        </Button>
       </Stack>
+
+      <Box sx={{
+        mt: 4,
+        textAlign: 'center',
+      }}>
+        <Typography sx={{fontSize: 12}}>
+          Active users: <strong>{usersCountData}</strong>
+        </Typography>
+      </Box>
     </form>
   )
 }
