@@ -14,6 +14,11 @@ export class UsersController {
     return this.usersService.getAll()
   }
 
+  @Get('/count')
+  getAllCount() {
+    return this.usersService.getAllCount()
+  }
+
   @Get('/:email')
   findByEmail(@Param('email') email: string) {
     return this.usersService.findByEmail(email);
@@ -24,7 +29,7 @@ export class UsersController {
     const id = randomUUID();
     const createdAt = new Date()
 
-    this.usersService.create({
+    return this.usersService.create({
       id,
       createdAt,
       ...user,

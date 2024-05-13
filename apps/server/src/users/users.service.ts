@@ -10,6 +10,10 @@ export class UsersService {
     return this.users;
   }
 
+  getAllCount() {
+    return this.users.length;
+  }
+
   findByEmail(email: string) {
     const user = this.users.find((user) => user.email === email)
 
