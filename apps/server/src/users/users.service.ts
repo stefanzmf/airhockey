@@ -28,6 +28,6 @@ export class UsersService {
     }
 
     this.users.push(user);
-    return true;
+    return user;
   }
 }
