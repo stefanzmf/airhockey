@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
+import {io} from 'socket.io-client'
 
 import {api} from '../../queryClient'
+import { useEffect, useState } from 'react';
 
 export const usersKeys = {
   users: ['users'] as const,
@@ -35,4 +37,24 @@ export const useUsersCountQuery = () => {
       return response.data
     }
   })
+}
+
+export const useUsersCountLive = () => {
+  const [count, setCount] = useState<number>(0)
+
+  useEffect(() => {
+    const socket = io('ws://localhost:3000', {
+      path: '/users'
+    })
+
+    socket.on('activeUsersCount', (activeUsersCount) => {
+      setCount(activeUsersCount)
+    })
+
+    return () => {
+      socket.off('activeUsersCount')
+    }
+  }, []);
+
+  return count;
 }

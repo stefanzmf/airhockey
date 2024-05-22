@@ -3,11 +3,11 @@ import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 
 import { FieldsName } from './utils'
 import { messages, useFormValidation } from './useFieldValidation'
-import { useUserMutation, useUsersCountQuery } from './queries';
+import { useUserMutation, useUsersCountQuery, useUsersCountLive } from './queries';
 
 const Join = () => {
   const userMutation = useUserMutation()
-  const { data: usersCountData, isLoading: isLoadingUsersCount } = useUsersCountQuery();
+  const activeUsersCount = useUsersCountLive();
 
   const [formValues, setFormValues] = useState<{
     [FieldsName.USERNAME]: string,
@@ -62,8 +62,6 @@ const Join = () => {
 
   const hasErrors = Object.values(fieldsErrors).filter((err) => err).length !== 0
 
-  if (isLoadingUsersCount) return null;
-
   return (
     <form name="join" onSubmit={handleFormSubmit}>
       <Stack spacing={3}>
@@ -108,7 +106,7 @@ const Join = () => {
         textAlign: 'center',
       }}>
         <Typography sx={{fontSize: 12}}>
-          Active users: <strong>{usersCountData}</strong>
+          Active users: <strong>{activeUsersCount}</strong>
         </Typography>
       </Box>
     </form>
