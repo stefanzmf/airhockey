@@ -1,13 +1,13 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import {randomUUID} from 'crypto'
 
-import { User, UserReqBody } from './types';
+import { UserReqBody } from './types';
 import { UsersService } from './users.service';
+import { UsersGateway } from './users.gateway';
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {
-  }
+  constructor(private usersService: UsersService, private usersGateway: UsersGateway) {}
 
   @Get()
   getAll() {
@@ -25,14 +25,19 @@ export class UsersController {
   }
 
   @Post('/create')
-  create(@Body() user: UserReqBody) {
+  create(@Body() payload: UserReqBody) {
     const id = randomUUID();
     const createdAt = new Date()
 
-    return this.usersService.create({
+
+    const user = this.usersService.create({
       id,
       createdAt,
-      ...user,
+      ...payload,
     })
+
+    this.usersGateway.emitActiveUsersCount()
+
+    return user;
   }
 }
