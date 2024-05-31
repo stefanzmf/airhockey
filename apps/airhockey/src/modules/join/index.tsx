@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Alert, Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 import { FieldsName } from './utils'
 import { messages, useFormValidation } from './useFieldValidation'
@@ -8,6 +9,7 @@ import { useUserMutation, useUsersCountLive } from './queries';
 const Join = () => {
   const userMutation = useUserMutation()
   const activeUsersCount = useUsersCountLive()
+  const navigate = useNavigate()
 
   const [formValues, setFormValues] = useState<{
     [FieldsName.USERNAME]: string,
@@ -68,7 +70,7 @@ const Join = () => {
           return;
         }
 
-
+        navigate('/play')
       },
       onError: () => {
         setHasServerErrors(true)
