@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {io} from 'socket.io-client'
 
 import {api} from '../../queryClient'
-import { useEffect, useState } from 'react';
+import { UserResponseData } from './utils';
 
 export const usersKeys = {
   users: ['users'] as const,
@@ -10,8 +11,8 @@ export const usersKeys = {
 }
 
 export const useUserMutation = () => {
-  return useMutation({
-    mutationFn: ({ username, email }: {username: string, email: string}) => {
+  return useMutation<{ data: UserResponseData }, unknown, {username: string, email: string}>({
+    mutationFn: ({ username, email }) => {
       return api.post('/users/create', { username, email })
     }
   })
