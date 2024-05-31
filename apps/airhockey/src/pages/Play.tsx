@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 
-import { Board } from '../modules/game';
+import { Game } from '../modules/game';
 
 const Play = () => {
   return (
@@ -13,7 +13,7 @@ const Play = () => {
         alignItems: 'center'
       }}
     >
-      <Board />
+      <Game />
     </Box>
   )
 }

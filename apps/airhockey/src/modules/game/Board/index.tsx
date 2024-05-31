@@ -1,14 +1,16 @@
 import React from 'react';
-import {styled} from '@mui/material'
 
-const BoardWrapper = styled('div')`
-  border: 4px solid rgb(0, 0, 0);
-  aspect-ratio: 16/9;
-`
+import { generateRandomRGBColor } from '../../../helpers';
+
+import { BoardWrapper, BoardSeparator, BoardCenter, BoardGoal } from './styles'
 
 export const Board = () => {
   return (
     <BoardWrapper>
+      <BoardSeparator />
+      <BoardCenter />
+      <BoardGoal color={generateRandomRGBColor()} position="left" />
+      <BoardGoal color={generateRandomRGBColor()} position="right" />
     </BoardWrapper>
   )
 }

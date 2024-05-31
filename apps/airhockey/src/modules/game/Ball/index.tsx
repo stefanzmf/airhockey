@@ -12,7 +12,6 @@ const BallWrapper = styled('div')<Pick<BallProps, 'size' | 'color'>>`
   border: 1px solid rgba(0, 0, 0, .2);
 `
 
-
 export const Ball = ({
   color = generateRandomRGBColor(),
   size,

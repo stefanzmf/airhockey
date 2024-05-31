@@ -1,6 +1,6 @@
-export type Color = `rgb(${number}, ${number}, ${number})`
+import {RGBColor} from '../../../helpers'
 
 export type BallProps = {
-  color?: Color;
+  color?: RGBColor;
   size: number
 }

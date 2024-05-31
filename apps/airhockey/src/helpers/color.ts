@@ -1,4 +1,6 @@
-export const generateRandomRGBColor = () => {
+export type RGBColor = `rgb(${number}, ${number}, ${number})`;
+
+export const generateRandomRGBColor = (): RGBColor => {
   const R = Math.floor(Math.random() * 256)
   const G = Math.floor(Math.random() * 256)
   const B = Math.floor(Math.random() * 256)
