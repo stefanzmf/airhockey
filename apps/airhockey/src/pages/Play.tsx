@@ -1,13 +1,20 @@
 import React from 'react';
-import { Ball } from '../modules/game';
+import { Box } from '@mui/material';
+
+import { Board } from '../modules/game';
 
 const Play = () => {
   return (
-    <>
-      <Ball size={40} />
-      <Ball size={40} />
-      <span>Play Page Goes here</span>
-    </>
+    <Box
+      sx={{
+        padding: '5%',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center'
+      }}
+    >
+      <Board />
+    </Box>
   )
 }
 
