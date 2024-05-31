@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Stack, TextField, Typography } from '@mui/material';
 
 import { FieldsName } from './utils'
 import { messages, useFormValidation } from './useFieldValidation'
-import { useUserMutation, useUsersCountQuery, useUsersCountLive } from './queries';
+import { useUserMutation, useUsersCountLive } from './queries';
 
 const Join = () => {
   const userMutation = useUserMutation()
-  const activeUsersCount = useUsersCountLive();
+  const activeUsersCount = useUsersCountLive()
 
   const [formValues, setFormValues] = useState<{
     [FieldsName.USERNAME]: string,
@@ -24,8 +24,10 @@ const Join = () => {
     [FieldsName.USERNAME]: undefined,
     [FieldsName.EMAIL]: undefined
   });
-
   const [validateField] = useFormValidation()
+
+  const [hasServerErrors, setHasServerErrors] = useState<boolean>(false)
+  const hasClientErrors = Object.values(fieldsErrors).filter((err) => err).length !== 0
 
   const handleOnFieldBlur = useCallback((event: React.FocusEvent<HTMLInputElement>) => {
     const fieldName = event.target.name as FieldsName;
@@ -44,6 +46,7 @@ const Join = () => {
 
   const handleOnFieldChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const fieldName = event.target.name;
+    setHasServerErrors(false);
 
     setFormValues((prev) => ({
       ...prev,
@@ -57,10 +60,21 @@ const Join = () => {
     userMutation.mutate({
       username: formValues[FieldsName.USERNAME],
       email: formValues[FieldsName.EMAIL],
+    }, {
+      onSuccess: ({ data }) => {
+        if (!data) {
+          setHasServerErrors(true)
+
+          return;
+        }
+
+
+      },
+      onError: () => {
+        setHasServerErrors(true)
+      }
     })
   }, [formValues[FieldsName.USERNAME], formValues[FieldsName.EMAIL]])
-
-  const hasErrors = Object.values(fieldsErrors).filter((err) => err).length !== 0
 
   return (
     <form name="join" onSubmit={handleFormSubmit}>
@@ -95,7 +109,7 @@ const Join = () => {
         <Button
           type="submit"
           variant="contained"
-          disabled={hasErrors || userMutation.isPending}
+          disabled={hasClientErrors || hasServerErrors || userMutation.isPending}
         >
           Join
         </Button>
@@ -109,6 +123,12 @@ const Join = () => {
           Active users: <strong>{activeUsersCount}</strong>
         </Typography>
       </Box>
+
+      {hasServerErrors && (
+        <Alert severity="error" variant="filled" sx={{ mt: 3 }}>
+          Error joining the game. Please try again later or double-check your user
+        </Alert>
+      )}
     </form>
   )
 }
